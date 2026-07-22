@@ -1,64 +1,62 @@
-# 🏆 Simulador y Predictor del Mundial (Prode .NET)
+# 🏆 Simulador y Predictor del Mundial (Quiniela C++)
 
-Un sistema de simulación y predicción de resultados para la Copa del Mundo, construido en **.NET**. Este proyecto aplica principios de diseño de software limpio utilizando múltiples **Patrones de Diseño** para gestionar la complejidad de las apuestas, los algoritmos de simulación, la estructura del torneo y la actualización en tiempo real de los rankings de los usuarios.
+Un sistema de simulación y predicción de resultados para la Copa del Mundo, construido en **C++**. Este proyecto es una demostración práctica de la aplicación de **Patrones de Diseño** (GoF) para estructurar el código de manera limpia, escalable y mantenible. Gestiona desde la complejidad de los algoritmos de predicción hasta la actualización dinámica de los puntajes de los usuarios.
 
 ---
 
 ## 🛠️ Tecnologías
 
-* **Lenguaje:** C#
-* **Framework:** .NET (Core / 8.0+)
+* **Lenguaje:** C++ (C++17 / C++20 recomendado)
+* **Build System:** CMake / Make
 * **Paradigma:** Programación Orientada a Objetos (POO)
 
 ---
 
 ## 🏗️ Patrones de Diseño Implementados
 
-Este proyecto es un caso de estudio ideal para la implementación práctica de patrones de diseño del *Gang of Four (GoF)*. A continuación se detalla cómo se aplica cada uno:
+El sistema utiliza punteros inteligentes (`std::shared_ptr`, `std::unique_ptr`) para un manejo seguro de la memoria en la implementación de los siguientes patrones:
 
 ### 1. Strategy (Comportamiento)
 
-**Uso:** Definir distintos algoritmos de predicción para simular quién ganará un partido.
+**Uso:** Definir y encapsular distintos algoritmos para predecir el resultado de un partido.
 
-* **Implementación:** Se define una interfaz `IPredictionStrategy`. Las clases concretas (`FifaRankingStrategy`, `HistoryStrategy`, `AdvancedStatsStrategy`) implementan esta interfaz. El sistema puede intercambiar el algoritmo de predicción en tiempo de ejecución según la preferencia del usuario o la configuración del simulador, sin alterar la clase principal del partido.
+* **Implementación en C++:** Se define una clase abstracta pura `IPredictionStrategy` con un método virtual puro `Predict()`. Las clases concretas (`FifaRankingStrategy`, `HistoryStrategy`, `AdvancedStatsStrategy`) heredan de ella. El sistema utiliza polimorfismo para inyectar el algoritmo deseado en el simulador mediante un puntero, permitiendo cambiar la estrategia en tiempo de ejecución.
 
 ### 2. Observer (Comportamiento)
 
-**Uso:** Actualizar dinámicamente el ranking de los usuarios cada vez que se carga el resultado real de un partido.
+**Uso:** Actualizar dinámicamente el ranking de la quiniela cuando un partido real termina.
 
-* **Implementación:** El `Match` (Partido) actúa como el *Sujeto* (Subject). Los `UserRankings` (o los perfiles de usuario) actúan como *Observadores*. Cuando un partido finaliza y se establece su resultado oficial, notifica automáticamente a todos los observadores suscritos para que recalculen sus puntajes en la quiniela.
+* **Implementación en C++:** La clase `Match` actúa como *Subject* (Sujeto observable) y mantiene un `std::vector<std::shared_ptr<IObserver>>`. La clase `UserRanking` actúa como *Observer*. Cuando se llama al método `SetRealResult()` en un partido, este itera sobre sus observadores llamando al método `Update()`, permitiendo que los usuarios recalculen sus puntos automáticamente.
 
 ### 3. Factory Method (Creacional)
 
-**Uso:** Generar distintos tipos de apuestas y predicciones sin acoplar el código a las clases concretas.
+**Uso:** Crear diferentes tipos de apuestas de forma desacoplada.
 
-* **Implementación:** Una clase abstracta `PredictionFactory` define el método de creación. Las subclases (ej. `ExactScoreFactory`, `TopScorerFactory`, `QualifierFactory`) se encargan de instanciar las predicciones correspondientes (`ResultadoExacto`, `Goleador`, `Clasificados`).
+* **Implementación en C++:** Una clase base `PredictionFactory` expone el método virtual `std::unique_ptr<Prediction> CreatePrediction()`. Subclases como `ExactScoreFactory`, `TopScorerFactory` y `QualifierFactory` sobreescriben este método para instanciar y retornar los objetos específicos (`ExactResult`, `TopScorerBet`), evitando el uso directo del operador `new` en la lógica de negocio principal.
 
 ### 4. Composite (Estructural)
 
-**Uso:** Modelar la estructura de partidos anidados del torneo (Bracket) tratando grupos e instancias individuales de manera uniforme.
+**Uso:** Modelar el "bracket" (llaves) del torneo como una estructura de árbol, donde grupos y partidos se tratan de manera uniforme.
 
-* **Implementación:** Se crea una interfaz `ITournamentStage`. La clase `Match` (Partido individual) actúa como la *Hoja* (Leaf). La clase `Bracket` o `Group` actúa como el *Composite*, conteniendo una lista de `ITournamentStage` (que pueden ser partidos u otras sub-fases como "Fase de Grupos", "Octavos", "Cuartos"). Esto permite calcular estadísticas o verificar el progreso de todo un grupo o del torneo entero con un solo llamado recursivo.
+* **Implementación en C++:** Se define una interfaz `ITournamentStage` (Componente). La clase `Match` es la *Hoja* (Leaf), ya que no contiene sub-elementos. La clase `Bracket` (o `Group`) es el *Composite*, que almacena un `std::vector<std::shared_ptr<ITournamentStage>>`. Al invocar un método como `DisplayMatches()` en la raíz del torneo, la llamada se propaga recursivamente por todas las fases y partidos.
 
 ### 5. State (Comportamiento)
 
-**Uso:** Controlar el ciclo de vida y las reglas de validación de cada predicción realizada por un usuario.
+**Uso:** Manejar el ciclo de vida de una predicción/apuesta hecha por un usuario.
 
-* **Implementación:** Una clase `Prediction` mantiene una referencia a una interfaz `IPredictionState`. Los estados concretos son `PendingState` (Pendiente), `CorrectState` (Acertada) y `FailedState` (Fallada). Las acciones (como calcular los puntos o intentar modificar la apuesta) varían dependiendo del estado actual de la predicción (ej. no se puede editar una apuesta si ya pasó al estado Acertada o Fallada).
+* **Implementación en C++:** La clase `Prediction` (Contexto) delega su comportamiento a un objeto que implementa `IPredictionState`. Los estados concretos (`PendingState`, `CorrectState`, `FailedState`) dictan si una apuesta puede ser modificada o cómo calcula sus puntos. Las transiciones de estado actualizan el puntero `std::unique_ptr<IPredictionState>` dentro del contexto.
 
 ---
 
-## 📊 Diagrama de Clases (Arquitectura Principal)
-
-A continuación se presenta un diagrama conceptual (generado en Mermaid) que ilustra la relación de los patrones dentro del sistema:
+## 📊 Diagrama de Clases (Arquitectura)
 
 ```mermaid
 classDiagram
     %% COMPOSITE PATTERN
     class ITournamentStage {
         <<interface>>
-        +DisplayMatches()
-        +IsCompleted() bool
+        +DisplayMatches()* void
+        +IsCompleted()* bool
     }
     class Match {
         +string TeamA
@@ -66,8 +64,8 @@ classDiagram
         +SetRealResult()
     }
     class Bracket {
-        -List~ITournamentStage~ stages
-        +AddStage(ITournamentStage)
+        -vector~ITournamentStage*~ stages
+        +AddStage(ITournamentStage*)
     }
     ITournamentStage <|.. Match : Leaf
     ITournamentStage <|.. Bracket : Composite
@@ -76,7 +74,7 @@ classDiagram
     %% OBSERVER PATTERN
     class IObservableMatch {
         <<interface>>
-        +Attach(IObserverRanking)
+        +Attach(IObserverRanking*)
         +Notify()
     }
     class IObserverRanking {
@@ -89,7 +87,7 @@ classDiagram
     %% STRATEGY PATTERN
     class IPredictionStrategy {
         <<interface>>
-        +Predict(TeamA, TeamB) Result
+        +Predict(TeamA, TeamB)* Result
     }
     class FifaRankingStrategy { }
     class HistoryStrategy { }
@@ -99,8 +97,8 @@ classDiagram
     IPredictionStrategy <|.. AdvancedStatsStrategy
     
     class Simulator {
-        -IPredictionStrategy strategy
-        +SetStrategy(IPredictionStrategy)
+        -IPredictionStrategy* strategy
+        +SetStrategy(IPredictionStrategy*)
         +RunSimulation()
     }
     Simulator *-- IPredictionStrategy
@@ -108,8 +106,8 @@ classDiagram
     %% STATE PATTERN
     class IPredictionState {
         <<interface>>
-        +CalculatePoints() int
-        +LockPrediction()
+        +CalculatePoints()* int
+        +LockPrediction()*
     }
     class PendingState { }
     class CorrectState { }
@@ -119,15 +117,15 @@ classDiagram
     IPredictionState <|.. FailedState
 
     class Prediction {
-        -IPredictionState state
-        +SetState(IPredictionState)
+        -IPredictionState* state
+        +SetState(IPredictionState*)
     }
     Prediction *-- IPredictionState
 
     %% FACTORY METHOD PATTERN
     class PredictionFactory {
         <<abstract>>
-        +CreatePrediction() Prediction
+        +CreatePrediction()* Prediction
     }
     class ExactScoreFactory { }
     class QualifierFactory { }
@@ -139,31 +137,46 @@ classDiagram
 
 ---
 
-## 🚀 Cómo ejecutar el proyecto
+## 🚀 Cómo compilar y ejecutar el proyecto
 
-1. Clonar el repositorio:
+Este proyecto utiliza `CMake` para facilitar la configuración de compilación multiplataforma.
+
+1. **Clonar el repositorio:**
 ```bash
-git clone https://github.com/tu-usuario/quiniela-patrones-dotnet.git
+git clone https://github.com/tu-usuario/quiniela-patrones-cpp.git
+cd quiniela-patrones-cpp
 
 ```
 
 
-2. Navegar al directorio del proyecto:
+2. **Crear el directorio de compilación (Build):**
 ```bash
-cd quiniela-patrones-dotnet
+mkdir build && cd build
 
 ```
 
 
-3. Compilar el proyecto:
+3. **Configurar el proyecto con CMake:**
 ```bash
-dotnet build
+cmake ..
 
 ```
 
 
-4. Ejecutar la consola/simulador:
+4. **Compilar el código fuente:**
 ```bash
-dotnet run
+cmake --build .
 
 ```
+
+
+*(Alternativamente, si estás en Linux/macOS y usaste generadores Makefiles, puedes ejecutar simplemente `make`).*
+5. **Ejecutar el simulador:**
+```bash
+./QuinielaSimulator
+
+```
+
+
+
+*(Nota: El nombre del ejecutable final puede variar dependiendo de la configuración en tu archivo `CMakeLists.txt`).*
