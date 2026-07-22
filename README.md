@@ -1,4 +1,4 @@
-# 🏆 Simulador y Predictor del Mundial (Quiniela .NET)
+# 🏆 Simulador y Predictor del Mundial (Prode .NET)
 
 Un sistema de simulación y predicción de resultados para la Copa del Mundo, construido en **.NET**. Este proyecto aplica principios de diseño de software limpio utilizando múltiples **Patrones de Diseño** para gestionar la complejidad de las apuestas, los algoritmos de simulación, la estructura del torneo y la actualización en tiempo real de los rankings de los usuarios.
 
