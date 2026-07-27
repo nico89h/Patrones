@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Facultad\\MundialProde\\MundialProde.csproj": {}
+    "E:\\0-FACULTAD\\Patrones\\Trabajo Final\\Patrones\\MundialProde.csproj": {}
   },
   "projects": {
-    "D:\\Facultad\\MundialProde\\MundialProde.csproj": {
+    "E:\\0-FACULTAD\\Patrones\\Trabajo Final\\Patrones\\MundialProde.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Facultad\\MundialProde\\MundialProde.csproj",
+        "projectUniqueName": "E:\\0-FACULTAD\\Patrones\\Trabajo Final\\Patrones\\MundialProde.csproj",
         "projectName": "MundialProde",
-        "projectPath": "D:\\Facultad\\MundialProde\\MundialProde.csproj",
-        "packagesPath": "C:\\Users\\Nilo\\.nuget\\packages\\",
-        "outputPath": "D:\\Facultad\\MundialProde\\obj\\",
+        "projectPath": "E:\\0-FACULTAD\\Patrones\\Trabajo Final\\Patrones\\MundialProde.csproj",
+        "packagesPath": "C:\\Users\\Facu\\.nuget\\packages\\",
+        "outputPath": "E:\\0-FACULTAD\\Patrones\\Trabajo Final\\Patrones\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Nilo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Facu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -43,8 +43,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "10.0.200"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -60,12 +59,30 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.13, 8.0.13]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.13, 8.0.13]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.13, 8.0.13]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.13, 8.0.13]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200-preview.0.26103.119/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

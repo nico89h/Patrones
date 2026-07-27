@@ -19,6 +19,7 @@ namespace MundialProde.Models
         public EstadoPartido Estado { get; private set; } = EstadoPartido.Pendiente;
         public string Etapa { get; }
         public Seleccion GanadorPenales { get; private set; }
+        public override bool PuedeContenerComponentes => false;
 
         private readonly List<IObservadorPartido> _observadores = new List<IObservadorPartido>();
 
@@ -92,6 +93,12 @@ namespace MundialProde.Models
         public override List<Partido> ObtenerPartidos() => new List<Partido> { this };
 
         public override bool EstaFinalizado() => Estado == EstadoPartido.Finalizado;
+
+        public override ComponenteTorneo Buscar(string nombre)
+            => Nombre == nombre ? this : null;
+
+        public override List<ComponenteTorneo> BuscarTodos(Func<ComponenteTorneo, bool> criterio)
+            => criterio(this) ? new List<ComponenteTorneo> { this } : new List<ComponenteTorneo>();
 
         public override void Mostrar(string indent = "")
         {

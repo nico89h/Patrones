@@ -63,14 +63,14 @@ namespace MundialProde
             string nombreCopa = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(nombreCopa)) nombreCopa = "Copa Mundial 2026";
 
-            copa = new CopaMundo(nombreCopa);
+            copa = new CopaMundo(nombreCopa, new Etapa("Torneo", mostrarNombre: false));
             usuarios = new List<Usuario>();
             ranking = new Ranking(usuarios, copa);
 
             CargarSeleccionesDesdeJson("Data/selecciones.json");
             GenerarFaseDeGrupos();
 
-            int cantidadGrupos = copa.Etapas.Count(e => e.Nombre.StartsWith("Grupo"));
+            int cantidadGrupos = copa.BuscarComponentes(c => c != copa.Raiz && c.PuedeContenerComponentes && c.Nombre.StartsWith("Grupo")).Count;
             Console.WriteLine($"\n'{copa.Nombre}' creada con {copa.Selecciones.Count} selecciones en {cantidadGrupos} grupos.");
         }
 
@@ -106,7 +106,7 @@ namespace MundialProde
                     for (int j = i + 1; j < equipos.Count; j++)
                         CrearYAgregarPartido(etapaGrupo, equipos[i], equipos[j], etapaGrupo.Nombre);
 
-                copa.Etapas.Add(etapaGrupo);
+                copa.AgregarComponente(etapaGrupo);
             }
         }
 
@@ -306,17 +306,17 @@ namespace MundialProde
             switch (op)
             {
                 case "1":
-                    foreach (var etapa in copa.Etapas.Where(e => e.Nombre.StartsWith("Grupo")))
+                    foreach (var etapa in copa.BuscarComponentes(c => c != copa.Raiz && c.PuedeContenerComponentes && c.Nombre.StartsWith("Grupo")))
                         etapa.Simular(estrategia);
                     Console.WriteLine("Fase de grupos simulada.");
                     break;
 
                 case "2":
                     Console.WriteLine("Etapas disponibles:");
-                    foreach (var e in copa.Etapas) Console.WriteLine($"- {e.Nombre}");
+                    foreach (var e in copa.BuscarComponentes(c => c != copa.Raiz && c.PuedeContenerComponentes)) Console.WriteLine($"- {e.Nombre}");
                     Console.Write("Nombre exacto de la etapa: ");
                     string nombreEtapa = Console.ReadLine();
-                    var etapaElegida = copa.ObtenerEtapa(nombreEtapa);
+                    var etapaElegida = copa.BuscarComponente(nombreEtapa);
                     if (etapaElegida == null) { Console.WriteLine("Etapa no encontrada."); return; }
                     etapaElegida.Simular(estrategia);
                     Console.WriteLine("Etapa simulada.");
@@ -337,8 +337,7 @@ namespace MundialProde
                     break;
 
                 case "4":
-                    foreach (var etapa in copa.Etapas)
-                        etapa.Simular(estrategia);
+                    copa.Simular(estrategia);
                     Console.WriteLine("Se simuló todo lo pendiente.");
                     break;
 
@@ -372,33 +371,33 @@ namespace MundialProde
 
         private static void GenerarFaseEliminatoria()
         {
-            bool grupos = copa.Etapas.Where(e => e.Nombre.StartsWith("Grupo")).All(e => e.EstaFinalizado());
+            bool grupos = copa.BuscarComponentes(c => c != copa.Raiz && c.PuedeContenerComponentes && c.Nombre.StartsWith("Grupo")).All(e => e.EstaFinalizado());
             if (!grupos) { Console.WriteLine("Todavía no finalizó la fase de grupos."); return; }
 
-            var cuartos = copa.ObtenerEtapa("Cuartos de Final");
+            var cuartos = copa.BuscarComponente("Cuartos de Final");
             if (cuartos == null)
             {
-                copa.Etapas.Add(ArmarCuartos());
+                copa.AgregarComponente(ArmarCuartos());
                 Console.WriteLine("Se generaron los Cuartos de Final.");
                 return;
             }
 
             if (!cuartos.EstaFinalizado()) { Console.WriteLine("Todavía no finalizaron los Cuartos de Final."); return; }
 
-            var semis = copa.ObtenerEtapa("Semifinal");
+            var semis = copa.BuscarComponente("Semifinal");
             if (semis == null)
             {
-                copa.Etapas.Add(ArmarSiguienteRonda(cuartos, "Semifinal"));
+                copa.AgregarComponente(ArmarSiguienteRonda(cuartos, "Semifinal"));
                 Console.WriteLine("Se generó la Semifinal.");
                 return;
             }
 
             if (!semis.EstaFinalizado()) { Console.WriteLine("Todavía no finalizó la Semifinal."); return; }
 
-            var final = copa.ObtenerEtapa("Final");
+            var final = copa.BuscarComponente("Final");
             if (final == null)
             {
-                copa.Etapas.Add(ArmarSiguienteRonda(semis, "Final"));
+                copa.AgregarComponente(ArmarSiguienteRonda(semis, "Final"));
                 Console.WriteLine("Se generó la Final.");
                 return;
             }
@@ -412,7 +411,7 @@ namespace MundialProde
         private static Etapa ArmarCuartos()
         {
             var clasificados = new List<Seleccion>();
-            var gruposOrdenados = copa.Etapas.Where(e => e.Nombre.StartsWith("Grupo")).OrderBy(e => e.Nombre);
+            var gruposOrdenados = copa.BuscarComponentes(c => c != copa.Raiz && c.PuedeContenerComponentes && c.Nombre.StartsWith("Grupo")).OrderBy(e => e.Nombre);
 
             foreach (var grupo in gruposOrdenados)
             {
@@ -437,7 +436,7 @@ namespace MundialProde
             return cuartos;
         }
 
-        private static Etapa ArmarSiguienteRonda(Etapa etapaAnterior, string nombreNuevaEtapa)
+        private static Etapa ArmarSiguienteRonda(ComponenteTorneo etapaAnterior, string nombreNuevaEtapa)
         {
             var partidosAnteriores = etapaAnterior.ObtenerPartidos();
             var nuevaEtapa = new Etapa(nombreNuevaEtapa);

@@ -12,17 +12,24 @@ namespace MundialProde.Models
     public class Etapa : ComponenteTorneo
     {
         private readonly List<ComponenteTorneo> _hijos = new List<ComponenteTorneo>();
+        private readonly bool _mostrarNombre;
 
-        public Etapa(string nombre) : base(nombre) { }
+        public Etapa(string nombre, bool mostrarNombre = true) : base(nombre)
+        {
+            _mostrarNombre = mostrarNombre;
+        }
 
-        public void Agregar(ComponenteTorneo c) => _hijos.Add(c);
+        public override bool PuedeContenerComponentes => true;
+
+        public override void Agregar(ComponenteTorneo c) => _hijos.Add(c);
         public void Eliminar(ComponenteTorneo c) => _hijos.Remove(c);
         public ComponenteTorneo Obtener(int i) => _hijos[i];
         public IReadOnlyList<ComponenteTorneo> Hijos => _hijos;
 
         public override void Mostrar(string indent = "")
         {
-            Console.WriteLine($"{indent}== {Nombre} ==");
+            if (_mostrarNombre)
+                Console.WriteLine($"{indent}== {Nombre} ==");
             foreach (var hijo in _hijos)
                 hijo.Mostrar(indent + "   ");
         }
@@ -38,5 +45,29 @@ namespace MundialProde.Models
 
         public override bool EstaFinalizado()
             => _hijos.Count > 0 && _hijos.All(h => h.EstaFinalizado());
+
+        public override ComponenteTorneo Buscar(string nombre)
+        {
+            if (Nombre == nombre) return this;
+
+            foreach (var hijo in _hijos)
+            {
+                var encontrado = hijo.Buscar(nombre);
+                if (encontrado != null) return encontrado;
+            }
+
+            return null;
+        }
+
+        public override List<ComponenteTorneo> BuscarTodos(Func<ComponenteTorneo, bool> criterio)
+        {
+            var encontrados = new List<ComponenteTorneo>();
+            if (criterio(this)) encontrados.Add(this);
+
+            foreach (var hijo in _hijos)
+                encontrados.AddRange(hijo.BuscarTodos(criterio));
+
+            return encontrados;
+        }
     }
 }
