@@ -1,0 +1,34 @@
+# Archivos de compilación
+bin/
+obj/
+
+# Configuración de Visual Studio
+.vs/
+
+# Archivos de usuario
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / JetBrains
+.idea/
+
+# VS Code
+.vscode/
+
+# Archivos de logs
+*.log
+
+# Paquetes NuGet
+*.nupkg
+
+# Caché de NuGet (opcional)
+packages/
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Caché de compilación
+*.cache

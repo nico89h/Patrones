@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/Bl47h2VO1E=",
+  "dgSpecHash": "i6GSkAZNHKA=",
   "success": true,
-  "projectFilePath": "E:\\0-FACULTAD\\Patrones\\Trabajo Final\\Patrones\\MundialProde\\MundialProde.csproj",
+  "projectFilePath": "E:\\0-FACULTAD\\Patrones\\Trabajo Final\\zProyecto\\Patrones\\MundialProde\\MundialProde.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Facu\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.13\\microsoft.netcore.app.ref.8.0.13.nupkg.sha512",
     "C:\\Users\\Facu\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.13\\microsoft.windowsdesktop.app.ref.8.0.13.nupkg.sha512",
