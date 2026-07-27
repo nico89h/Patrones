@@ -1,0 +1,21 @@
+[
+  { "Nombre": "Argentina",      "RankingFifa": 1,  "Grupo": "A" },
+  { "Nombre": "Mexico",         "RankingFifa": 15, "Grupo": "A" },
+  { "Nombre": "Polonia",        "RankingFifa": 28, "Grupo": "A" },
+  { "Nombre": "Arabia Saudita", "RankingFifa": 56, "Grupo": "A" },
+
+  { "Nombre": "Francia",        "RankingFifa": 2,  "Grupo": "B" },
+  { "Nombre": "Dinamarca",      "RankingFifa": 21, "Grupo": "B" },
+  { "Nombre": "Australia",      "RankingFifa": 27, "Grupo": "B" },
+  { "Nombre": "Tunez",          "RankingFifa": 30, "Grupo": "B" },
+
+  { "Nombre": "Brasil",         "RankingFifa": 3,  "Grupo": "C" },
+  { "Nombre": "Suiza",          "RankingFifa": 16, "Grupo": "C" },
+  { "Nombre": "Serbia",         "RankingFifa": 29, "Grupo": "C" },
+  { "Nombre": "Camerun",        "RankingFifa": 43, "Grupo": "C" },
+
+  { "Nombre": "España",         "RankingFifa": 8,  "Grupo": "D" },
+  { "Nombre": "Alemania",       "RankingFifa": 11, "Grupo": "D" },
+  { "Nombre": "Japon",          "RankingFifa": 20, "Grupo": "D" },
+  { "Nombre": "Costa Rica",     "RankingFifa": 31, "Grupo": "D" }
+]
