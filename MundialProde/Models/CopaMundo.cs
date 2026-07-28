@@ -36,8 +36,8 @@ namespace MundialProde.Models
             Raiz = new Etapa(nombre);
         }
 
-        // Busca cualquier etapa del árbol por nombre (recursivo, vía Composite.Buscar).
-        public Etapa ObtenerEtapa(string nombre) => Raiz.Buscar(nombre) as Etapa;
+        // Busca cualquier componente del árbol por nombre (recursivo, vía Composite.Buscar).
+        public ComponenteTorneo BuscarComponente(string nombre) => Raiz.Buscar(nombre);
 
         public List<Partido> TodosLosPartidos() => Raiz.ObtenerPartidos();
 

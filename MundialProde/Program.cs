@@ -154,12 +154,12 @@ namespace MundialProde
 
         private static void RevisarAvanceDeFase()
         {
-            var faseDeGrupos = copa.ObtenerEtapa("Fase de Grupos");
-            var faseEliminatoria = copa.ObtenerEtapa("Fase Eliminatoria");
+            var faseDeGrupos = copa.BuscarComponente("Fase de Grupos") as Etapa;
+            var faseEliminatoria = copa.BuscarComponente("Fase Eliminatoria");
             if (faseDeGrupos == null || faseEliminatoria == null) return;
             if (!faseDeGrupos.EstaFinalizado()) return;
 
-            var cuartos = copa.ObtenerEtapa("Cuartos de Final");
+            var cuartos = copa.BuscarComponente("Cuartos de Final") as Etapa;
             if (cuartos == null)
             {
                 cuartos = ArmarCuartos(faseDeGrupos);
@@ -170,7 +170,7 @@ namespace MundialProde
             }
             if (!cuartos.EstaFinalizado()) return;
 
-            var semis = copa.ObtenerEtapa("Semifinal");
+            var semis = copa.BuscarComponente("Semifinal") as Etapa;
             if (semis == null)
             {
                 semis = ArmarSiguienteRonda(cuartos, "Semifinal");
@@ -181,7 +181,7 @@ namespace MundialProde
             }
             if (!semis.EstaFinalizado()) return;
 
-            var final = copa.ObtenerEtapa("Final");
+            var final = copa.BuscarComponente("Final") as Etapa;
             if (final == null)
             {
                 final = ArmarSiguienteRonda(semis, "Final");
