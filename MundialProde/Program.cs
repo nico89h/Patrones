@@ -637,8 +637,11 @@ namespace MundialProde
                 }
             }
 
-            foreach (var hijo in copa.Raiz.Hijos)
-                Recorrer(hijo);
+            if (copa.Raiz is Etapa raiz)
+            {
+                foreach (var hijo in raiz.Hijos)
+                    Recorrer(hijo);
+            }
 
             return resultado;
         }

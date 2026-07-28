@@ -25,7 +25,7 @@ namespace MundialProde.Models
         // Gracias al Composite, da lo mismo pedirle Mostrar()/Simular()/
         // ObtenerPartidos() a la Raiz completa, a "Fase de Grupos", a
         // "Grupo A" o a un Partido suelto: la interfaz es la misma.
-        public Etapa Raiz { get; }
+        public ComponenteTorneo Raiz { get; }
 
         public List<Seleccion> Selecciones { get; } = new List<Seleccion>();
         public Seleccion Campeon { get; set; }

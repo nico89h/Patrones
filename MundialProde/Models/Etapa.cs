@@ -15,8 +15,8 @@ namespace MundialProde.Models
 
         public Etapa(string nombre) : base(nombre) { }
 
-        public void Agregar(ComponenteTorneo c) => _hijos.Add(c);
-        public void Eliminar(ComponenteTorneo c) => _hijos.Remove(c);
+        public override void Agregar(ComponenteTorneo c) => _hijos.Add(c);
+        public override void Eliminar(ComponenteTorneo c) => _hijos.Remove(c);
         public ComponenteTorneo Obtener(int i) => _hijos[i];
         public IReadOnlyList<ComponenteTorneo> Hijos => _hijos;
 

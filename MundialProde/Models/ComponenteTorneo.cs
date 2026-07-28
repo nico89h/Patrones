@@ -21,6 +21,9 @@ namespace MundialProde.Models
         public abstract void Simular(IEstrategiaSimulacion estrategia);
         public abstract bool EstaFinalizado();
 
+        public virtual void Agregar(ComponenteTorneo c) { }
+        public virtual void Eliminar(ComponenteTorneo c) { }
+
         // Busca recursivamente un componente (Etapa o Partido) por nombre en todo el árbol.
         // Al ser abstracto acá, tanto la hoja como el compuesto lo resuelven de forma uniforme.
         public abstract ComponenteTorneo Buscar(string nombre);
