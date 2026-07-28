@@ -1,8 +1,14 @@
+using MundialProde.Strategy;
+
 namespace MundialProde.Models
 {
-    public enum EstadoPartido
+    // ===== PATRON STATE =====
+    public abstract class EstadoPartido
     {
-        Pendiente,
-        Finalizado
+        public abstract string Nombre { get; }
+        public abstract void Simular(Partido partido, IEstrategiaSimulacion estrategia);
+        public abstract bool EstaFinalizado();
+        public abstract Seleccion ObtenerGanador(Partido partido);
+        public abstract string ObtenerResultado(Partido partido);
     }
 }

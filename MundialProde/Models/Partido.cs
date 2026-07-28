@@ -25,7 +25,7 @@ namespace MundialProde.Models
         public Seleccion Visitante { get; }
         public int GolesLocal { get; private set; }
         public int GolesVisitante { get; private set; }
-        public EstadoPartido Estado { get; private set; } = EstadoPartido.Pendiente;
+        public EstadoPartido Estado { get; private set; } = new EstadoPendiente();
         public string Etapa { get; }
         public Seleccion GanadorPenales { get; private set; }
 
@@ -49,48 +49,24 @@ namespace MundialProde.Models
                 obs.ActualizarPuntaje(this);
         }
 
-        // Ganador por goles (null si terminó empatado)
-        public Seleccion Ganador
-        {
-            get
-            {
-                if (Estado != EstadoPartido.Finalizado) return null;
-                if (GolesLocal > GolesVisitante) return Local;
-                if (GolesVisitante > GolesLocal) return Visitante;
-                return null;
-            }
-        }
+        // Ganador por goles (null si el partido está pendiente o terminó empatado)
+        public Seleccion Ganador => Estado.ObtenerGanador(this);
 
         // Ganador real considerando definición por penales en fases eliminatorias
         public Seleccion GanadorDefinitivo => Ganador ?? GanadorPenales;
 
         public override void Simular(IEstrategiaSimulacion estrategia)
+            => Estado.Simular(this, estrategia);
+
+        internal void RegistrarResultado(int golesLocal, int golesVisitante)
         {
-            if (Estado == EstadoPartido.Finalizado) return;
-
-            var resultado = estrategia.Simular(Local, Visitante);
-            GolesLocal = resultado.golesLocal;
-            GolesVisitante = resultado.golesVisitante;
-            Estado = EstadoPartido.Finalizado;
-
-            ActualizarEstadisticasGrupo();
-
-            // En fase eliminatoria no puede quedar un ganador ausente: se define por penales.
-            if (!Etapa.StartsWith("Grupo") && GolesLocal == GolesVisitante)
-                GanadorPenales = _rndPenales.Next(2) == 0 ? Local : Visitante;
-
-            // Dispara la notificación a los observadores (ej: Ranking) -> PATRON OBSERVER
-            Notificar();
-
-            // Llamada directa (sin patrón, sin clase aparte): revisa si con
-            // este partido se completó la etapa actual y arma la siguiente.
-            AlFinalizarPartido?.Invoke();
-
-            // Se muestra el resultado apenas se termina de simular el partido.
-            Mostrar();
+            GolesLocal = golesLocal;
+            GolesVisitante = golesVisitante;
         }
 
-        private void ActualizarEstadisticasGrupo()
+        internal void CambiarEstado(EstadoPartido estado) => Estado = estado;
+
+        internal void ActualizarEstadisticasGrupo()
         {
             Local.GolesFavor += GolesLocal;
             Local.GolesContra += GolesVisitante;
@@ -102,26 +78,19 @@ namespace MundialProde.Models
             else { Local.PuntosGrupo += 1; Visitante.PuntosGrupo += 1; }
         }
 
+        internal void DefinirGanadorPorPenales()
+            => GanadorPenales = _rndPenales.Next(2) == 0 ? Local : Visitante;
+
         public override List<Partido> ObtenerPartidos() => new List<Partido> { this };
 
-        public override bool EstaFinalizado() => Estado == EstadoPartido.Finalizado;
+        public override bool EstaFinalizado() => Estado.EstaFinalizado();
 
         public override ComponenteTorneo Buscar(string nombre) => Nombre == nombre ? this : null;
 
         public override void Mostrar(string indent = "")
         {
-            string resultado;
-            if (Estado == EstadoPartido.Finalizado)
-            {
-                resultado = $"{GolesLocal} - {GolesVisitante}";
-                if (GanadorPenales != null)
-                    resultado += $" (definido por penales: {GanadorPenales.Nombre})";
-            }
-            else
-            {
-                resultado = "vs";
-            }
-            Console.WriteLine($"{indent}[{Etapa}] {Local.Nombre} {resultado} {Visitante.Nombre}  ({Estado})");
+            string resultado = Estado.ObtenerResultado(this);
+            Console.WriteLine($"{indent}[{Etapa}] {Local.Nombre} {resultado} {Visitante.Nombre}  ({Estado.Nombre})");
         }
     }
 }
