@@ -12,7 +12,7 @@ namespace MundialProde.Usuarios
             "ElCraque", "FieraDelBarrio", "PronosticoFacil", "OjoClinico", "GoleadorNato",
             "TacticoDeSofa", "AnalistaDeQuiniela", "SuperFan", "ElVidente", "PalitoDeOro",
             "NoFalloUna", "CabezaCaliente", "LaGarra", "OjoDeAguila", "PicaditoFC",
-            "ReyDelProde", "DTdeButaca", "SegundoArquero", "ElCabezazo", "Gambetin"
+            "ReyDelPrcode", "DTdeButaca", "SegundoArquero", "ElCabezazo", "Gambetin"
         };
 
         private static readonly Random _rnd = new Random();

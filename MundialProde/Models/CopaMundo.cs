@@ -1,39 +1,46 @@
 using System;
 using System.Collections.Generic;
-using MundialProde.Strategy;
 
 namespace MundialProde.Models
 {
     public class CopaMundo
     {
         public string Nombre { get; }
-        // CopaMundo conoce únicamente el componente raíz, nunca el tipo de
-        // compuesto concreto que organiza el torneo.
-        public ComponenteTorneo Raiz { get; }
+
+        // ===== PATRON COMPOSITE (uso correcto y recursivo) =====
+        // CopaMundo NO guarda una lista plana de etapas. Guarda UN solo
+        // ComponenteTorneo raíz. Todo el árbol del torneo cuelga de ahí:
+        //
+        //   Raiz ("Copa Mundial 2026")
+        //    ├── "Fase de Grupos"
+        //    │     ├── "Grupo A" -> Partido, Partido, ...
+        //    │     ├── "Grupo B" -> ...
+        //    │     ├── "Grupo C" -> ...
+        //    │     └── "Grupo D" -> ...
+        //    └── "Fase Eliminatoria"   (se va completando a medida que avanza el torneo)
+        //          ├── "Cuartos de Final" -> Partido, Partido, Partido, Partido
+        //          ├── "Semifinal" -> Partido, Partido
+        //          └── "Final" -> Partido
+        //
+        // Gracias al Composite, da lo mismo pedirle Mostrar()/Simular()/
+        // ObtenerPartidos() a la Raiz completa, a "Fase de Grupos", a
+        // "Grupo A" o a un Partido suelto: la interfaz es la misma.
+        public Etapa Raiz { get; }
+
         public List<Seleccion> Selecciones { get; } = new List<Seleccion>();
         public Seleccion Campeon { get; set; }
 
-        public CopaMundo(string nombre, ComponenteTorneo raiz)
+        public CopaMundo(string nombre)
         {
             Nombre = nombre;
-            Raiz = raiz ?? throw new ArgumentNullException(nameof(raiz));
+            Raiz = new Etapa(nombre);
         }
 
-        public void AgregarComponente(ComponenteTorneo componente) => Raiz.Agregar(componente);
-
-        public ComponenteTorneo BuscarComponente(string nombre) => Raiz.Buscar(nombre);
-
-        public List<ComponenteTorneo> BuscarComponentes(Func<ComponenteTorneo, bool> criterio)
-            => Raiz.BuscarTodos(criterio);
+        // Busca cualquier etapa del árbol por nombre (recursivo, vía Composite.Buscar).
+        public Etapa ObtenerEtapa(string nombre) => Raiz.Buscar(nombre) as Etapa;
 
         public List<Partido> TodosLosPartidos() => Raiz.ObtenerPartidos();
 
-        public void Simular(IEstrategiaSimulacion estrategia) => Raiz.Simular(estrategia);
-
-        public void Mostrar()
-        {
-            Console.WriteLine($"\n### {Nombre} ###");
-            Raiz.Mostrar("  ");
-        }
+        public void Mostrar() => Raiz.Mostrar();
     }
 }

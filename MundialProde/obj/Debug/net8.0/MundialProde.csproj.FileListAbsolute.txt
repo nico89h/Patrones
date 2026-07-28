@@ -1,63 +1,15 @@
-D:\Facultad\MundialProde\bin\Debug\net8.0\Data\selecciones.json
-D:\Facultad\MundialProde\bin\Debug\net8.0\MundialProde.exe
-D:\Facultad\MundialProde\bin\Debug\net8.0\MundialProde.deps.json
-D:\Facultad\MundialProde\bin\Debug\net8.0\MundialProde.runtimeconfig.json
-D:\Facultad\MundialProde\bin\Debug\net8.0\MundialProde.dll
-D:\Facultad\MundialProde\bin\Debug\net8.0\MundialProde.pdb
-D:\Facultad\MundialProde\obj\Debug\net8.0\MundialProde.GeneratedMSBuildEditorConfig.editorconfig
-D:\Facultad\MundialProde\obj\Debug\net8.0\MundialProde.AssemblyInfoInputs.cache
-D:\Facultad\MundialProde\obj\Debug\net8.0\MundialProde.AssemblyInfo.cs
-D:\Facultad\MundialProde\obj\Debug\net8.0\MundialProde.csproj.CoreCompileInputs.cache
-D:\Facultad\MundialProde\obj\Debug\net8.0\MundialProde.dll
-D:\Facultad\MundialProde\obj\Debug\net8.0\refint\MundialProde.dll
-D:\Facultad\MundialProde\obj\Debug\net8.0\MundialProde.pdb
-D:\Facultad\MundialProde\obj\Debug\net8.0\MundialProde.genruntimeconfig.cache
-D:\Facultad\MundialProde\obj\Debug\net8.0\ref\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\bin\Debug\net8.0\Data\selecciones.json
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\bin\Debug\net8.0\MundialProde.exe
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\bin\Debug\net8.0\MundialProde.deps.json
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\bin\Debug\net8.0\MundialProde.runtimeconfig.json
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\bin\Debug\net8.0\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\bin\Debug\net8.0\MundialProde.pdb
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\MundialProde.GeneratedMSBuildEditorConfig.editorconfig
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\MundialProde.AssemblyInfoInputs.cache
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\MundialProde.AssemblyInfo.cs
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\MundialProde.csproj.CoreCompileInputs.cache
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\MundialProde.sourcelink.json
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\refint\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\MundialProde.pdb
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\MundialProde.genruntimeconfig.cache
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\obj\Debug\net8.0\ref\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\bin\Debug\net8.0\Data\selecciones.json
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.exe
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.deps.json
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.runtimeconfig.json
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.pdb
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.GeneratedMSBuildEditorConfig.editorconfig
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.AssemblyInfoInputs.cache
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.AssemblyInfo.cs
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.csproj.CoreCompileInputs.cache
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.sourcelink.json
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\refint\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.pdb
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.genruntimeconfig.cache
-E:\0-FACULTAD\Patrones\Trabajo Final\Patrones\MundialProde\obj\Debug\net8.0\ref\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\bin\Debug\net8.0\Data\selecciones.json
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.exe
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.deps.json
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.runtimeconfig.json
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\bin\Debug\net8.0\MundialProde.pdb
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.GeneratedMSBuildEditorConfig.editorconfig
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.AssemblyInfoInputs.cache
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.AssemblyInfo.cs
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.csproj.CoreCompileInputs.cache
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.sourcelink.json
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\refint\MundialProde.dll
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.pdb
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\MundialProde.genruntimeconfig.cache
-E:\0-FACULTAD\Patrones\Trabajo Final\zProyecto\Patrones\MundialProde\obj\Debug\net8.0\ref\MundialProde.dll
+C:\Users\Nilo\Desktop\MundialProde\bin\Debug\net8.0\Data\selecciones.json
+C:\Users\Nilo\Desktop\MundialProde\bin\Debug\net8.0\MundialProde.exe
+C:\Users\Nilo\Desktop\MundialProde\bin\Debug\net8.0\MundialProde.deps.json
+C:\Users\Nilo\Desktop\MundialProde\bin\Debug\net8.0\MundialProde.runtimeconfig.json
+C:\Users\Nilo\Desktop\MundialProde\bin\Debug\net8.0\MundialProde.dll
+C:\Users\Nilo\Desktop\MundialProde\bin\Debug\net8.0\MundialProde.pdb
+C:\Users\Nilo\Desktop\MundialProde\obj\Debug\net8.0\MundialProde.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nilo\Desktop\MundialProde\obj\Debug\net8.0\MundialProde.AssemblyInfoInputs.cache
+C:\Users\Nilo\Desktop\MundialProde\obj\Debug\net8.0\MundialProde.AssemblyInfo.cs
+C:\Users\Nilo\Desktop\MundialProde\obj\Debug\net8.0\MundialProde.csproj.CoreCompileInputs.cache
+C:\Users\Nilo\Desktop\MundialProde\obj\Debug\net8.0\MundialProde.dll
+C:\Users\Nilo\Desktop\MundialProde\obj\Debug\net8.0\refint\MundialProde.dll
+C:\Users\Nilo\Desktop\MundialProde\obj\Debug\net8.0\MundialProde.pdb
+C:\Users\Nilo\Desktop\MundialProde\obj\Debug\net8.0\MundialProde.genruntimeconfig.cache
+C:\Users\Nilo\Desktop\MundialProde\obj\Debug\net8.0\ref\MundialProde.dll

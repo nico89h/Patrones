@@ -17,14 +17,31 @@ namespace MundialProde.Predicciones
             GolesVisitantePredichos = golesVisitante;
         }
 
-        public override bool Acerto()
+        private bool EsResultadoExacto()
+            => Partido.EstaFinalizado()
+               && Partido.GolesLocal == GolesLocalPredichos
+               && Partido.GolesVisitante == GolesVisitantePredichos;
+
+        private bool AciertaGanador()
         {
-            return Partido.EstaFinalizado()
-                && Partido.GolesLocal == GolesLocalPredichos
-                && Partido.GolesVisitante == GolesVisitantePredichos;
+            if (!Partido.EstaFinalizado()) return false;
+            return Signo(Partido.GolesLocal, Partido.GolesVisitante)
+                == Signo(GolesLocalPredichos, GolesVisitantePredichos);
         }
 
-        public override int PuntosBase => 3;
+        private static string Signo(int golesLocal, int golesVisitante)
+        {
+            if (golesLocal > golesVisitante) return "Local";
+            if (golesVisitante > golesLocal) return "Visitante";
+            return "Empate";
+        }
+
+        // "Acertar" (para pasar a estado Acertado) incluye tanto clavar el resultado
+        // exacto como solo acertar quién gana (o el empate).
+        public override bool Acerto() => EsResultadoExacto() || AciertaGanador();
+
+        // 3 puntos si acertó el marcador exacto, 1 punto si solo acertó el ganador/empate.
+        public override int PuntosBase => EsResultadoExacto() ? 3 : 1;
 
         public override string Descripcion()
             => $"{Partido.Local.Nombre} {GolesLocalPredichos} - {GolesVisitantePredichos} {Partido.Visitante.Nombre}";

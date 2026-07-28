@@ -12,24 +12,17 @@ namespace MundialProde.Models
     public class Etapa : ComponenteTorneo
     {
         private readonly List<ComponenteTorneo> _hijos = new List<ComponenteTorneo>();
-        private readonly bool _mostrarNombre;
 
-        public Etapa(string nombre, bool mostrarNombre = true) : base(nombre)
-        {
-            _mostrarNombre = mostrarNombre;
-        }
+        public Etapa(string nombre) : base(nombre) { }
 
-        public override bool PuedeContenerComponentes => true;
-
-        public override void Agregar(ComponenteTorneo c) => _hijos.Add(c);
+        public void Agregar(ComponenteTorneo c) => _hijos.Add(c);
         public void Eliminar(ComponenteTorneo c) => _hijos.Remove(c);
         public ComponenteTorneo Obtener(int i) => _hijos[i];
         public IReadOnlyList<ComponenteTorneo> Hijos => _hijos;
 
         public override void Mostrar(string indent = "")
         {
-            if (_mostrarNombre)
-                Console.WriteLine($"{indent}== {Nombre} ==");
+            Console.WriteLine($"{indent}== {Nombre} ==");
             foreach (var hijo in _hijos)
                 hijo.Mostrar(indent + "   ");
         }
@@ -39,35 +32,30 @@ namespace MundialProde.Models
 
         public override void Simular(IEstrategiaSimulacion estrategia)
         {
-            foreach (var hijo in _hijos)
-                hijo.Simular(estrategia);
+            // Recorrido por índice (no foreach): si mientras se simula un hijo
+            // se agrega automáticamente uno nuevo a esta misma lista (ej:
+            // RevisarAvanceDeFase() agrega la Semifinal apenas termina
+            // Cuartos), el bucle lo sigue viendo y también lo simula, en
+            // cascada, sin romper por "colección modificada durante la
+            // enumeración".
+            for (int i = 0; i < _hijos.Count; i++)
+                _hijos[i].Simular(estrategia);
         }
 
         public override bool EstaFinalizado()
             => _hijos.Count > 0 && _hijos.All(h => h.EstaFinalizado());
 
+        // Recorre el árbol: primero se pregunta a sí misma, después a cada hijo
+        // (que a su vez, si es otra Etapa, sigue bajando recursivamente).
         public override ComponenteTorneo Buscar(string nombre)
         {
             if (Nombre == nombre) return this;
-
             foreach (var hijo in _hijos)
             {
                 var encontrado = hijo.Buscar(nombre);
                 if (encontrado != null) return encontrado;
             }
-
             return null;
-        }
-
-        public override List<ComponenteTorneo> BuscarTodos(Func<ComponenteTorneo, bool> criterio)
-        {
-            var encontrados = new List<ComponenteTorneo>();
-            if (criterio(this)) encontrados.Add(this);
-
-            foreach (var hijo in _hijos)
-                encontrados.AddRange(hijo.BuscarTodos(criterio));
-
-            return encontrados;
         }
     }
 }

@@ -8,9 +8,18 @@ namespace MundialProde.Models
     // ===== PATRON COMPOSITE (hoja) + PATRON OBSERVER (subject/notificador) =====
     // Un Partido es la hoja del árbol del torneo (Composite) y, a la vez, el
     // "publisher" que avisa a sus observadores (ej: el Ranking) cuando finaliza.
+    // El avance de fases (armar Cuartos/Semifinal/Final) NO es un observer ni
+    // una clase aparte: es una función privada de Program que se engancha acá
+    // (ver AlFinalizarPartido) y se llama directo, sin ningún patrón de por medio.
     public class Partido : ComponenteTorneo, IPartidoNotificador
     {
         private static readonly Random _rndPenales = new Random();
+
+        // Función que Program engancha una sola vez al arrancar (ver
+        // IniciarCopaMundo) para revisar el avance de fase apenas termina un
+        // partido. Es un delegado simple, no una interfaz ni un patrón: se
+        // podría dejar en null y el partido igual funciona.
+        internal static Action AlFinalizarPartido;
 
         public Seleccion Local { get; }
         public Seleccion Visitante { get; }
@@ -19,7 +28,6 @@ namespace MundialProde.Models
         public EstadoPartido Estado { get; private set; } = EstadoPartido.Pendiente;
         public string Etapa { get; }
         public Seleccion GanadorPenales { get; private set; }
-        public override bool PuedeContenerComponentes => false;
 
         private readonly List<IObservadorPartido> _observadores = new List<IObservadorPartido>();
 
@@ -74,6 +82,10 @@ namespace MundialProde.Models
             // Dispara la notificación a los observadores (ej: Ranking) -> PATRON OBSERVER
             Notificar();
 
+            // Llamada directa (sin patrón, sin clase aparte): revisa si con
+            // este partido se completó la etapa actual y arma la siguiente.
+            AlFinalizarPartido?.Invoke();
+
             // Se muestra el resultado apenas se termina de simular el partido.
             Mostrar();
         }
@@ -94,11 +106,7 @@ namespace MundialProde.Models
 
         public override bool EstaFinalizado() => Estado == EstadoPartido.Finalizado;
 
-        public override ComponenteTorneo Buscar(string nombre)
-            => Nombre == nombre ? this : null;
-
-        public override List<ComponenteTorneo> BuscarTodos(Func<ComponenteTorneo, bool> criterio)
-            => criterio(this) ? new List<ComponenteTorneo> { this } : new List<ComponenteTorneo>();
+        public override ComponenteTorneo Buscar(string nombre) => Nombre == nombre ? this : null;
 
         public override void Mostrar(string indent = "")
         {
