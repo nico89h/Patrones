@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MundialProde.Strategy;
 
 namespace MundialProde.Models
 {
@@ -29,6 +30,8 @@ namespace MundialProde.Models
 
         public List<Seleccion> Selecciones { get; } = new List<Seleccion>();
         public Seleccion Campeon { get; set; }
+
+        public IEstrategiaSimulacion estrategiaSimulacion { get; set; } = new EstrategiaEstadistica();
 
         public CopaMundo(string nombre)
         {

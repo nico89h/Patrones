@@ -23,7 +23,6 @@ namespace MundialProde
 
         // La estrategia se elige una vez desde el menú y se reutiliza en cada simulación,
         // en vez de volver a preguntar cada vez que se quiere simular algo.
-        private static IEstrategiaSimulacion estrategiaActual = new EstrategiaRankingFifa();
 
         public static void Main(string[] args)
         {
@@ -253,7 +252,7 @@ namespace MundialProde
             Console.WriteLine("1. Ver estructura del torneo (bracket)");
             Console.WriteLine("2. Gestionar usuarios");
             Console.WriteLine("3. Cargar predicciones");
-            Console.WriteLine($"4. Elegir estrategia de simulación (actual: {estrategiaActual.Nombre})");
+            Console.WriteLine($"4. Elegir estrategia de simulación (actual: {copa.estrategiaSimulacion.Nombre})");
             Console.WriteLine("5. Simular partidos");
             Console.WriteLine("6. Ver ranking");
             Console.WriteLine("0. Salir");
@@ -517,8 +516,8 @@ namespace MundialProde
             var nueva = ElegirEstrategia();
             if (nueva != null)
             {
-                estrategiaActual = nueva;
-                Console.WriteLine($"Estrategia actual: {estrategiaActual.Nombre}");
+                copa.estrategiaSimulacion = nueva;
+                Console.WriteLine($"Estrategia actual: {copa.estrategiaSimulacion.Nombre}");
             }
             // Si nueva es null, ElegirEstrategia ya mostró el mensaje
             // correspondiente (cancelado u opción inválida).
@@ -540,16 +539,16 @@ namespace MundialProde
                 case "2": return new EstrategiaHistorica();
                 case "3": return new EstrategiaEstadistica();
                 case "0":
-                    Console.WriteLine($"Cancelado. Se mantiene la estrategia actual: {estrategiaActual.Nombre}");
+                    Console.WriteLine($"Cancelado. Se mantiene la estrategia actual: {copa.estrategiaSimulacion.Nombre}");
                     return null;
                 default:
-                    Console.WriteLine($"Opción inválida. Se mantiene la estrategia actual: {estrategiaActual.Nombre}");
+                    Console.WriteLine($"Opción inválida. Se mantiene la estrategia actual: {copa.estrategiaSimulacion.Nombre}");
                     return null;
             }
         }
 
         // ----------------------------------------------------------------
-        // Simulación — usa siempre estrategiaActual (no vuelve a preguntar).
+        // Simulación — usa siempre copa.estrategiaSimulacion (no vuelve a preguntar).
         // La fase eliminatoria se genera sola (RevisarAvanceDeFase(), llamada
         // directa al final de cada Partido.Simular): no hay ninguna opción de
         // menú para "generarla a mano".
@@ -557,7 +556,7 @@ namespace MundialProde
 
         private static void MenuSimulacion()
         {
-            Console.WriteLine($"Estrategia actual: {estrategiaActual.Nombre}");
+            Console.WriteLine($"Estrategia actual: {copa.estrategiaSimulacion.Nombre}");
             Console.WriteLine("\n¿Qué querés simular?");
             Console.WriteLine("1. Una etapa específica");
             Console.WriteLine("2. Un partido puntual");
@@ -582,7 +581,7 @@ namespace MundialProde
                     if (int.TryParse(entradaEtapa, out int eIdx) && eIdx >= 1 && eIdx <= etapas.Count)
                     {
                         Console.WriteLine();
-                        etapas[eIdx - 1].Simular(estrategiaActual);
+                        etapas[eIdx - 1].Simular(copa.estrategiaSimulacion);
                         Console.WriteLine("\nEtapa simulada.");
                     }
                     else Console.WriteLine("Etapa inválida.");
@@ -600,13 +599,13 @@ namespace MundialProde
                     if (int.TryParse(entradaPartido, out int pIdx) && pIdx >= 1 && pIdx <= partidos.Count)
                     {
                         Console.WriteLine();
-                        partidos[pIdx - 1].Simular(estrategiaActual);
+                        partidos[pIdx - 1].Simular(copa.estrategiaSimulacion);
                     }
                     else Console.WriteLine("Partido inválido.");
                     break;
 
                 case "3":
-                    copa.Raiz.Simular(estrategiaActual);
+                    copa.Raiz.Simular(copa.estrategiaSimulacion);
                     Console.WriteLine("\nSe simuló todo lo pendiente del torneo.");
                     break;
 
