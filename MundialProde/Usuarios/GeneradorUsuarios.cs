@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace MundialProde.Usuarios
 {
-    // Genera usuarios "bot" con nombres aleatorios, para dar sensación de que
-    // se compite contra más gente aunque el usuario real haya creado pocos.
+    // Genera usuarios "bot" con nombres aleatorios
     public static class GeneradorUsuarios
     {
         private static readonly string[] Apodos =

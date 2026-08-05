@@ -3,31 +3,28 @@ using MundialProde.Predicciones.Estados;
 
 namespace MundialProde.Predicciones
 {
-    // ===== PATRON STATE (contexto) =====
     public abstract class Prediccion
     {
-        public Usuario Usuario { get; }
-        public IEstadoPrediccion Estado { get; private set; }
+        private readonly Usuario _usuario;
+        private IEstadoPrediccion _estado;
 
         protected Prediccion(Usuario usuario)
         {
-            Usuario = usuario;
-            Estado = new EstadoPendiente();
+            _usuario = usuario;
+            _estado = new EstadoPendiente();
         }
 
-        public bool PuedeEditar() => Estado.PuedeEditar();
-
-        // Delega en el estado actual la transición correspondiente.
+        public bool PuedeEditar() => _estado.PuedeEditar();
         public void Evaluar()
         {
-            Estado = Estado.Evaluar(this);
+            _estado = _estado.Evaluar(this);
         }
 
-        public int ObtenerPuntos() => Estado.CalcularPuntos(this);
-
-        // Cada tipo concreto de predicción sabe comparar contra la realidad.
+        public int ObtenerPuntos() => _estado.CalcularPuntos(this);
+        public string NombreEstado => _estado.Nombre;
         public abstract bool Acerto();
         public abstract int PuntosBase { get; }
         public abstract string Descripcion();
+        public abstract string Tipo { get; }
     }
 }

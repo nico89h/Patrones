@@ -5,10 +5,6 @@ using MundialProde.Strategy;
 
 namespace MundialProde.Models
 {
-    // ===== PATRON COMPOSITE (compuesto) =====
-    // Una Etapa (ej: "Grupo A", "Cuartos de Final") agrupa Partidos (u otras
-    // Etapas, si se quisiera anidar más) y expone la misma interfaz que un
-    // Partido individual: Mostrar(), ObtenerPartidos(), Simular(), EstaFinalizado().
     public class Etapa : ComponenteTorneo
     {
         private readonly List<ComponenteTorneo> _hijos = new List<ComponenteTorneo>();
@@ -32,12 +28,6 @@ namespace MundialProde.Models
 
         public override void Simular(IEstrategiaSimulacion estrategia)
         {
-            // Recorrido por índice (no foreach): si mientras se simula un hijo
-            // se agrega automáticamente uno nuevo a esta misma lista (ej:
-            // RevisarAvanceDeFase() agrega la Semifinal apenas termina
-            // Cuartos), el bucle lo sigue viendo y también lo simula, en
-            // cascada, sin romper por "colección modificada durante la
-            // enumeración".
             for (int i = 0; i < _hijos.Count; i++)
                 _hijos[i].Simular(estrategia);
         }
@@ -45,8 +35,6 @@ namespace MundialProde.Models
         public override bool EstaFinalizado()
             => _hijos.Count > 0 && _hijos.All(h => h.EstaFinalizado());
 
-        // Recorre el árbol: primero se pregunta a sí misma, después a cada hijo
-        // (que a su vez, si es otra Etapa, sigue bajando recursivamente).
         public override ComponenteTorneo Buscar(string nombre)
         {
             if (Nombre == nombre) return this;

@@ -8,17 +8,6 @@ using MundialProde.Predicciones;
 
 namespace MundialProde.Servicios
 {
-    // ===== PATRON OBSERVER (observador concreto) =====
-    // El Ranking se suscribe a cada Partido. Cuando un partido finaliza:
-    //  1) evalúa (y transiciona el ESTADO de) las predicciones de resultado de ese partido
-    //  2) si el partido finalizado es la Final, define el campeón y evalúa las
-    //     predicciones de campeón
-    //  3) suma los puntos correspondientes al perfil de cada usuario
-    //
-    // OJO: el Ranking NO se reordena acá. El orden es una vista derivada de los
-    // puntajes, que se calcula al vuelo recién cuando alguien pide verlo
-    // (ObtenerRankingOrdenado / MostrarRanking). Así se evita reordenar una
-    // estructura completa cada vez que termina un partido.
     public class Ranking : IObservadorPartido
     {
         private readonly List<Usuario> _usuarios;
@@ -36,7 +25,7 @@ namespace MundialProde.Servicios
             {
                 var prediccionesDelPartido = usuario.Predicciones
                     .OfType<PrediccionResultado>()
-                    .Where(p => p.Partido == partido && p.PuedeEditar());
+                    .Where(p => p.CorrespondeAPartido(partido) && p.PuedeEditar());
 
                 foreach (var prediccion in prediccionesDelPartido)
                 {
@@ -46,9 +35,9 @@ namespace MundialProde.Servicios
                 }
             }
 
-            if (partido.Etapa == "Final" && partido.GanadorDefinitivo != null)
+            if (partido.EsLaFinal() && partido.GanadorDefinitivo != null)
             {
-                _copa.Campeon = partido.GanadorDefinitivo;
+                _copa.DefinirCampeon(partido.GanadorDefinitivo);
                 EvaluarPrediccionesCampeon();
             }
         }

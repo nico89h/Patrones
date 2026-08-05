@@ -1,6 +1,5 @@
 namespace MundialProde.Models
 {
-    // Objeto plano usado únicamente para leer el archivo selecciones.json.
     public class SeleccionDTO
     {
         public string Nombre { get; set; }

@@ -5,28 +5,29 @@ namespace MundialProde.Predicciones
 {
     public class PrediccionResultado : Prediccion
     {
-        public Partido Partido { get; }
-        public int GolesLocalPredichos { get; }
-        public int GolesVisitantePredichos { get; }
+        private readonly Partido _partido;
+        private readonly int _golesLocalPredichos;
+        private readonly int _golesVisitantePredichos;
 
         public PrediccionResultado(Usuario usuario, Partido partido, int golesLocal, int golesVisitante)
             : base(usuario)
         {
-            Partido = partido;
-            GolesLocalPredichos = golesLocal;
-            GolesVisitantePredichos = golesVisitante;
+            _partido = partido;
+            _golesLocalPredichos = golesLocal;
+            _golesVisitantePredichos = golesVisitante;
         }
+        public bool CorrespondeAPartido(Partido partido) => _partido == partido;
 
         private bool EsResultadoExacto()
-            => Partido.EstaFinalizado()
-               && Partido.GolesLocal == GolesLocalPredichos
-               && Partido.GolesVisitante == GolesVisitantePredichos;
+            => _partido.EstaFinalizado()
+               && _partido.GolesLocal == _golesLocalPredichos
+               && _partido.GolesVisitante == _golesVisitantePredichos;
 
         private bool AciertaGanador()
         {
-            if (!Partido.EstaFinalizado()) return false;
-            return Signo(Partido.GolesLocal, Partido.GolesVisitante)
-                == Signo(GolesLocalPredichos, GolesVisitantePredichos);
+            if (!_partido.EstaFinalizado()) return false;
+            return Signo(_partido.GolesLocal, _partido.GolesVisitante)
+                == Signo(_golesLocalPredichos, _golesVisitantePredichos);
         }
 
         private static string Signo(int golesLocal, int golesVisitante)
@@ -36,14 +37,13 @@ namespace MundialProde.Predicciones
             return "Empate";
         }
 
-        // "Acertar" (para pasar a estado Acertado) incluye tanto clavar el resultado
-        // exacto como solo acertar quién gana (o el empate).
         public override bool Acerto() => EsResultadoExacto() || AciertaGanador();
 
-        // 3 puntos si acertó el marcador exacto, 1 punto si solo acertó el ganador/empate.
         public override int PuntosBase => EsResultadoExacto() ? 3 : 1;
 
+        public override string Tipo => "Resultado";
+
         public override string Descripcion()
-            => $"{Partido.Local.Nombre} {GolesLocalPredichos} - {GolesVisitantePredichos} {Partido.Visitante.Nombre}";
+            => $"{_partido.Local.Nombre} {_golesLocalPredichos} - {_golesVisitantePredichos} {_partido.Visitante.Nombre}";
     }
 }
