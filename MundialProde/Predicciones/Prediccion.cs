@@ -21,10 +21,10 @@ namespace MundialProde.Predicciones
         }
 
         public int ObtenerPuntos() => _estado.CalcularPuntos(this);
-        public string NombreEstado => _estado.Nombre;
+        public string ObtenerNombreEstado() => _estado.Nombre;
         public abstract bool Acerto();
-        public abstract int PuntosBase { get; }
+        public abstract int ObtenerPuntosBase();
         public abstract string Descripcion();
-        public abstract string Tipo { get; }
+        public abstract string ObtenerTipo();
     }
 }

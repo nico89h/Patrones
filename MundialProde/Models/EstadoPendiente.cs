@@ -8,14 +8,14 @@ namespace MundialProde.Models
 
         public override void Simular(Partido partido, IEstrategiaSimulacion estrategia)
         {
-            var resultado = estrategia.Simular(partido.Local, partido.Visitante);
+            var resultado = estrategia.Simular(partido.ObtenerLocal(), partido.ObtenerVisitante());
             partido.RegistrarResultado(resultado.golesLocal, resultado.golesVisitante);
             partido.CambiarEstado(new EstadoFinalizado());
 
             partido.ActualizarEstadisticasGrupo();
 
             // En fase eliminatoria no puede quedar sin ganador, se define por penales.
-            if (!partido.Etapa.StartsWith("Grupo") && partido.GolesLocal == partido.GolesVisitante)
+            if (!partido.ObtenerEtapa().StartsWith("Grupo") && partido.ObtenerGolesLocal() == partido.ObtenerGolesVisitante())
                 partido.DefinirGanadorPorPenales();
 
             // Notifica a los observer

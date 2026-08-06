@@ -12,7 +12,7 @@ namespace MundialProde.Servicios
         private readonly CopaMundo _copa;
         private readonly Ranking _ranking;
 
-        public CopaMundo Copa => _copa;
+        public CopaMundo ObtenerCopa() => _copa;
 
         public TorneoService(CopaMundo copa, Ranking ranking)
         {
@@ -37,8 +37,8 @@ namespace MundialProde.Servicios
             var faseEliminatoria = new Etapa("Fase Eliminatoria");
             _copa.AgregarAlArbol(faseEliminatoria);
 
-            int cantidadGrupos = faseDeGrupos.Hijos.Count;
-            Console.WriteLine($"\n'{_copa.Nombre}' creada con {_copa.Selecciones.Count} selecciones en {cantidadGrupos} grupos.");
+            int cantidadGrupos = faseDeGrupos.ObtenerHijos().Count;
+            Console.WriteLine($"\n'{_copa.ObtenerNombre()}' creada con {_copa.ObtenerSelecciones().Count} selecciones en {cantidadGrupos} grupos.");
         }
 
         private void CargarSeleccionesDesdeJson(string rutaRelativa)
@@ -63,7 +63,7 @@ namespace MundialProde.Servicios
 
         private void GenerarFaseDeGrupos(Etapa contenedor)
         {
-            var grupos = _copa.Selecciones.GroupBy(s => s.Grupo).OrderBy(g => g.Key);
+            var grupos = _copa.ObtenerSelecciones().GroupBy(s => s.ObtenerGrupo()).OrderBy(g => g.Key);
             foreach (var grupo in grupos)
             {
                 var etapaGrupo = new Etapa($"Grupo {grupo.Key}");
@@ -71,7 +71,7 @@ namespace MundialProde.Servicios
 
                 for (int i = 0; i < equipos.Count; i++)
                     for (int j = i + 1; j < equipos.Count; j++)
-                        CrearYAgregarPartido(etapaGrupo, equipos[i], equipos[j], etapaGrupo.Nombre);
+                        CrearYAgregarPartido(etapaGrupo, equipos[i], equipos[j], etapaGrupo.ObtenerNombre());
 
                 contenedor.Agregar(etapaGrupo);
             }
@@ -133,12 +133,12 @@ namespace MundialProde.Servicios
         private Etapa ArmarCuartos(Etapa faseDeGrupos)
         {
             var clasificados = new List<Seleccion>();
-            var gruposOrdenados = faseDeGrupos.Hijos.OfType<Etapa>().OrderBy(e => e.Nombre);
+            var gruposOrdenados = faseDeGrupos.ObtenerHijos().OfType<Etapa>().OrderBy(e => e.ObtenerNombre());
 
             foreach (var grupo in gruposOrdenados)
             {
                 var equiposDelGrupo = grupo.ObtenerPartidos()
-                    .SelectMany(p => new[] { p.Local, p.Visitante })
+                    .SelectMany(p => new[] { p.ObtenerLocal(), p.ObtenerVisitante() })
                     .Distinct()
                     .OrderBy(s => s)
                     .Take(2)
@@ -163,8 +163,8 @@ namespace MundialProde.Servicios
 
             for (int i = 0; i < partidosAnteriores.Count; i += 2)
             {
-                var ganador1 = partidosAnteriores[i].GanadorDefinitivo;
-                var ganador2 = partidosAnteriores[i + 1].GanadorDefinitivo;
+                var ganador1 = partidosAnteriores[i].ObtenerGanadorDefinitivo();
+                var ganador2 = partidosAnteriores[i + 1].ObtenerGanadorDefinitivo();
                 ArmarPartidoEliminatoria(nuevaEtapa, ganador1, ganador2, nombreNuevaEtapa);
             }
 
@@ -187,7 +187,7 @@ namespace MundialProde.Servicios
                 {
                     if (etapa.ObtenerPartidos().Count > 0)
                         resultado.Add(etapa);
-                    foreach (var hijo in etapa.Hijos)
+                    foreach (var hijo in etapa.ObtenerHijos())
                         Recorrer(hijo);
                 }
             }

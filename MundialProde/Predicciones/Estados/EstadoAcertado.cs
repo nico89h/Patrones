@@ -11,6 +11,6 @@ namespace MundialProde.Predicciones.Estados
 
         public IEstadoPrediccion Evaluar(Prediccion prediccion) => this; // estado final
 
-        public int CalcularPuntos(Prediccion prediccion) => prediccion.PuntosBase;
+        public int CalcularPuntos(Prediccion prediccion) => prediccion.ObtenerPuntosBase();
     }
 }

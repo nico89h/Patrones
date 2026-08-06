@@ -14,7 +14,7 @@ namespace MundialProde.Strategy
             // Combina el ranking FIFA con un factor aleatorio de "forma reciente".
             double formaLocal = _rnd.NextDouble() * 0.6;
             double formaVisitante = _rnd.NextDouble() * 0.6;
-            double diferenciaRanking = (visitante.RankingFifa - local.RankingFifa) / 30.0;
+            double diferenciaRanking = (visitante.ObtenerRankingFifa() - local.ObtenerRankingFifa()) / 30.0;
 
             double lambdaLocal = Math.Max(0.3, 1.2 + diferenciaRanking + formaLocal);
             double lambdaVisitante = Math.Max(0.3, 1.2 - diferenciaRanking + formaVisitante);

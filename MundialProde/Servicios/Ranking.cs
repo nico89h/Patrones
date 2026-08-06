@@ -23,7 +23,7 @@ namespace MundialProde.Servicios
         {
             foreach (var usuario in _usuarios)
             {
-                var prediccionesDelPartido = usuario.Predicciones
+                var prediccionesDelPartido = usuario.ObtenerPredicciones()
                     .OfType<PrediccionResultado>()
                     .Where(p => p.CorrespondeAPartido(partido) && p.PuedeEditar());
 
@@ -35,9 +35,9 @@ namespace MundialProde.Servicios
                 }
             }
 
-            if (partido.EsLaFinal() && partido.GanadorDefinitivo != null)
+            if (partido.EsLaFinal() && partido.ObtenerGanadorDefinitivo() != null)
             {
-                _copa.DefinirCampeon(partido.GanadorDefinitivo);
+                _copa.DefinirCampeon(partido.ObtenerGanadorDefinitivo());
                 EvaluarPrediccionesCampeon();
             }
         }
@@ -46,7 +46,7 @@ namespace MundialProde.Servicios
         {
             foreach (var usuario in _usuarios)
             {
-                var prediccionesCampeon = usuario.Predicciones
+                var prediccionesCampeon = usuario.ObtenerPredicciones()
                     .OfType<PrediccionCampeon>()
                     .Where(p => p.PuedeEditar());
 
@@ -60,7 +60,7 @@ namespace MundialProde.Servicios
         }
 
         public List<Usuario> ObtenerRankingOrdenado()
-            => _usuarios.OrderByDescending(u => u.Puntaje).ToList();
+            => _usuarios.OrderByDescending(u => u.ObtenerPuntaje()).ToList();
 
         public void MostrarRanking()
         {
@@ -75,8 +75,8 @@ namespace MundialProde.Servicios
             int pos = 1;
             foreach (var u in ordenado)
             {
-                string tag = u.EsBot ? "(bot)" : "";
-                Console.WriteLine($"{pos,3}. {u.Nombre,-22} {tag,-6} {u.Puntaje} pts");
+                string tag = u.EsBot() ? "(bot)" : "";
+                Console.WriteLine($"{pos,3}. {u.ObtenerNombre(),-22} {tag,-6} {u.ObtenerPuntaje()} pts");
                 pos++;
             }
         }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Facultad\\Patrones-main\\MundialProde\\MundialProde.csproj": {}
+    "D:\\Facultad\\Patrones\\MundialProde\\MundialProde.csproj": {}
   },
   "projects": {
-    "D:\\Facultad\\Patrones-main\\MundialProde\\MundialProde.csproj": {
+    "D:\\Facultad\\Patrones\\MundialProde\\MundialProde.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Facultad\\Patrones-main\\MundialProde\\MundialProde.csproj",
+        "projectUniqueName": "D:\\Facultad\\Patrones\\MundialProde\\MundialProde.csproj",
         "projectName": "MundialProde",
-        "projectPath": "D:\\Facultad\\Patrones-main\\MundialProde\\MundialProde.csproj",
+        "projectPath": "D:\\Facultad\\Patrones\\MundialProde\\MundialProde.csproj",
         "packagesPath": "C:\\Users\\Nilo\\.nuget\\packages\\",
-        "outputPath": "D:\\Facultad\\Patrones-main\\MundialProde\\obj\\",
+        "outputPath": "D:\\Facultad\\Patrones\\MundialProde\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

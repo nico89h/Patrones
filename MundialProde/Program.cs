@@ -6,6 +6,11 @@ using MundialProde.Servicios;
 
 namespace MundialProde
 {
+    // Program queda como orquestador: arma el menú principal y delega toda
+    // la lógica en los services de Servicios/ (TorneoService, UsuarioService,
+    // PrediccionService, SimulacionService) y en Ranking (Observer), que ya
+    // existía. No se agregó ni se cambió ningún patrón: es la misma lógica
+    // que antes estaba toda en esta clase, separada por responsabilidad.
     public class Program
     {
         private static CopaMundo copa;
@@ -17,7 +22,7 @@ namespace MundialProde
 
         public static void Main(string[] args)
         {
-            try { Console.OutputEncoding = System.Text.Encoding.UTF8; } catch { }
+            try { Console.OutputEncoding = System.Text.Encoding.UTF8; } catch { /* algunas terminales no lo permiten */ }
 
             Console.WriteLine("==================================================");
             Console.WriteLine("   SIMULADOR DE MUNDIAL + PRODE DE PREDICCIONES   ");
@@ -33,7 +38,7 @@ namespace MundialProde
                 Console.WriteLine();
                 switch (opcion)
                 {
-                    case "1": torneoService.Copa.Mostrar(); break;
+                    case "1": torneoService.ObtenerCopa().Mostrar(); break;
                     case "2": usuarioService.MenuUsuarios(); break;
                     case "3": MenuPredicciones(); break;
                     case "4": simulacionService.MenuElegirEstrategia(); break;
@@ -46,6 +51,11 @@ namespace MundialProde
 
             Console.WriteLine("\n¡Hasta la próxima!");
         }
+
+        // ----------------------------------------------------------------
+        // Composition root: crea la Copa, el Ranking (Observer) y cada
+        // service, y dispara la inicialización del torneo (TorneoService).
+        // ----------------------------------------------------------------
 
         private static void IniciarServicios()
         {
@@ -71,7 +81,7 @@ namespace MundialProde
             Console.WriteLine("1. Ver estructura del torneo (bracket)");
             Console.WriteLine("2. Gestionar usuarios");
             Console.WriteLine("3. Cargar predicciones");
-            Console.WriteLine($"4. Elegir estrategia de simulación (actual: {copa.estrategiaSimulacion.Nombre})");
+            Console.WriteLine($"4. Elegir estrategia de simulación (actual: {copa.ObtenerNombreEstrategiaActual()})");
             Console.WriteLine("5. Simular partidos");
             Console.WriteLine("6. Ver ranking");
             Console.WriteLine("0. Salir");

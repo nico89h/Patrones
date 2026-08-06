@@ -11,7 +11,7 @@ namespace MundialProde.Strategy
         {
             // A menor ranking FIFA, mejor el equipo. La diferencia se traduce
             // en una ventaja de "goles esperados" (lambda de Poisson).
-            double diferencia = visitante.RankingFifa - local.RankingFifa;
+            double diferencia = visitante.ObtenerRankingFifa() - local.ObtenerRankingFifa();
             double lambdaLocal = Math.Max(0.3, 1.4 + diferencia / 25.0);
             double lambdaVisitante = Math.Max(0.3, 1.1 - diferencia / 25.0);
 

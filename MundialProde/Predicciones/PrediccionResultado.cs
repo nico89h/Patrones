@@ -20,13 +20,13 @@ namespace MundialProde.Predicciones
 
         private bool EsResultadoExacto()
             => _partido.EstaFinalizado()
-               && _partido.GolesLocal == _golesLocalPredichos
-               && _partido.GolesVisitante == _golesVisitantePredichos;
+               && _partido.ObtenerGolesLocal() == _golesLocalPredichos
+               && _partido.ObtenerGolesVisitante() == _golesVisitantePredichos;
 
         private bool AciertaGanador()
         {
             if (!_partido.EstaFinalizado()) return false;
-            return Signo(_partido.GolesLocal, _partido.GolesVisitante)
+            return Signo(_partido.ObtenerGolesLocal(), _partido.ObtenerGolesVisitante())
                 == Signo(_golesLocalPredichos, _golesVisitantePredichos);
         }
 
@@ -39,11 +39,11 @@ namespace MundialProde.Predicciones
 
         public override bool Acerto() => EsResultadoExacto() || AciertaGanador();
 
-        public override int PuntosBase => EsResultadoExacto() ? 3 : 1;
+        public override int ObtenerPuntosBase() => EsResultadoExacto() ? 3 : 1;
 
-        public override string Tipo => "Resultado";
+        public override string ObtenerTipo() => "Resultado";
 
         public override string Descripcion()
-            => $"{_partido.Local.Nombre} {_golesLocalPredichos} - {_golesVisitantePredichos} {_partido.Visitante.Nombre}";
+            => $"{_partido.ObtenerLocal().ObtenerNombre()} {_golesLocalPredichos} - {_golesVisitantePredichos} {_partido.ObtenerVisitante().ObtenerNombre()}";
     }
 }

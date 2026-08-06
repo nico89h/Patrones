@@ -13,8 +13,7 @@ namespace MundialProde.Models
 
         public override void Agregar(ComponenteTorneo c) => _hijos.Add(c);
         public override void Eliminar(ComponenteTorneo c) => _hijos.Remove(c);
-        public ComponenteTorneo Obtener(int i) => _hijos[i];
-        public IReadOnlyList<ComponenteTorneo> Hijos => _hijos;
+        public IReadOnlyList<ComponenteTorneo> ObtenerHijos() => _hijos;
 
         public override void Mostrar(string indent = "")
         {

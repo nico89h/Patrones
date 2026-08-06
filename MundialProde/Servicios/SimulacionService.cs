@@ -5,6 +5,11 @@ using MundialProde.Strategy;
 
 namespace MundialProde.Servicios
 {
+    // Encapsula la elección de estrategia de simulación (Strategy) y el
+    // disparo de la simulación en sí (etapa puntual, partido puntual o todo
+    // el torneo). La fase eliminatoria se sigue generando sola vía
+    // TorneoService (RevisarAvanceDeFase, enganchada a Partido.Simular):
+    // acá no hay ninguna opción de menú para "generarla a mano".
     public class SimulacionService
     {
         private readonly CopaMundo _copa;
@@ -21,9 +26,11 @@ namespace MundialProde.Servicios
             var nueva = ElegirEstrategia();
             if (nueva != null)
             {
-                _copa.estrategiaSimulacion = nueva;
-                Console.WriteLine($"Estrategia actual: {_copa.estrategiaSimulacion.Nombre}");
+                _copa.CambiarEstrategia(nueva);
+                Console.WriteLine($"Estrategia actual: {_copa.ObtenerNombreEstrategiaActual()}");
             }
+            // Si nueva es null, ElegirEstrategia ya mostró el mensaje
+            // correspondiente (cancelado u opción inválida).
         }
 
         private IEstrategiaSimulacion ElegirEstrategia()
@@ -42,17 +49,17 @@ namespace MundialProde.Servicios
                 case "2": return new EstrategiaHistorica();
                 case "3": return new EstrategiaEstadistica();
                 case "0":
-                    Console.WriteLine($"Cancelado. Se mantiene la estrategia actual: {_copa.estrategiaSimulacion.Nombre}");
+                    Console.WriteLine($"Cancelado. Se mantiene la estrategia actual: {_copa.ObtenerNombreEstrategiaActual()}");
                     return null;
                 default:
-                    Console.WriteLine($"Opción inválida. Se mantiene la estrategia actual: {_copa.estrategiaSimulacion.Nombre}");
+                    Console.WriteLine($"Opción inválida. Se mantiene la estrategia actual: {_copa.ObtenerNombreEstrategiaActual()}");
                     return null;
             }
         }
 
         public void MenuSimulacion()
         {
-            Console.WriteLine($"Estrategia actual: {_copa.estrategiaSimulacion.Nombre}");
+            Console.WriteLine($"Estrategia actual: {_copa.ObtenerNombreEstrategiaActual()}");
             Console.WriteLine("\n¿Qué querés simular?");
             Console.WriteLine("1. Una etapa específica");
             Console.WriteLine("2. Un partido puntual");
@@ -78,7 +85,7 @@ namespace MundialProde.Servicios
             if (etapas.Count == 0) { Console.WriteLine("No hay etapas con partidos pendientes para simular."); return; }
             Console.WriteLine("Etapas disponibles:");
             for (int i = 0; i < etapas.Count; i++)
-                Console.WriteLine($"{i + 1}. {etapas[i].Nombre}");
+                Console.WriteLine($"{i + 1}. {etapas[i].ObtenerNombre()}");
             Console.WriteLine("0. Cancelar");
             Console.Write("Elegí una etapa (número): ");
             string entradaEtapa = Console.ReadLine();
@@ -86,7 +93,7 @@ namespace MundialProde.Servicios
             if (int.TryParse(entradaEtapa, out int eIdx) && eIdx >= 1 && eIdx <= etapas.Count)
             {
                 Console.WriteLine();
-                etapas[eIdx - 1].Simular(_copa.estrategiaSimulacion);
+                _copa.SimularEtapa(etapas[eIdx - 1]);
                 Console.WriteLine("\nEtapa simulada.");
             }
             else Console.WriteLine("Etapa inválida.");
@@ -105,14 +112,14 @@ namespace MundialProde.Servicios
             if (int.TryParse(entradaPartido, out int pIdx) && pIdx >= 1 && pIdx <= partidos.Count)
             {
                 Console.WriteLine();
-                partidos[pIdx - 1].Simular(_copa.estrategiaSimulacion);
+                _copa.SimularPartido(partidos[pIdx - 1]);
             }
             else Console.WriteLine("Partido inválido.");
         }
 
         private void SimularTorneoCompleto()
         {
-            _copa.SimularTodo(_copa.estrategiaSimulacion);
+            _copa.SimularTodo();
             Console.WriteLine("\nSe simuló todo lo pendiente del torneo.");
         }
     }

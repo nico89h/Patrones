@@ -84,7 +84,7 @@ namespace MundialProde.Servicios
             for (int i = 0; i < _usuarios.Count; i++)
             {
                 var u = _usuarios[i];
-                Console.WriteLine($"{i + 1}. {u.Nombre,-22} {(u.EsBot ? "(bot)" : "     ")} | {u.Puntaje} pts | {u.Predicciones.Count} predicciones");
+                Console.WriteLine($"{i + 1}. {u.ObtenerNombre(),-22} {(u.EsBot() ? "(bot)" : "     ")} | {u.ObtenerPuntaje()} pts | {u.ObtenerPredicciones().Count} predicciones");
             }
 
             Console.Write("\nNúmero de usuario para ver su historial (enter para omitir): ");
@@ -107,7 +107,7 @@ namespace MundialProde.Servicios
 
             Console.WriteLine("Usuarios disponibles:");
             for (int i = 0; i < _usuarios.Count; i++)
-                Console.WriteLine($"{i + 1}. {_usuarios[i].Nombre}");
+                Console.WriteLine($"{i + 1}. {_usuarios[i].ObtenerNombre()}");
             Console.WriteLine("0. Volver");
             Console.Write("Elegí un usuario: ");
             string entrada = Console.ReadLine();
@@ -126,22 +126,22 @@ namespace MundialProde.Servicios
         // le dio cada una.
         public void MostrarHistorialPredicciones(Usuario usuario)
         {
-            Console.WriteLine($"\n===== Historial de predicciones de {usuario.Nombre} =====");
-            if (usuario.Predicciones.Count == 0)
+            Console.WriteLine($"\n===== Historial de predicciones de {usuario.ObtenerNombre()} =====");
+            if (usuario.ObtenerPredicciones().Count == 0)
             {
                 Console.WriteLine("(todavía no cargó ninguna predicción)");
                 return;
             }
 
-            foreach (var prediccion in usuario.Predicciones)
+            foreach (var prediccion in usuario.ObtenerPredicciones())
             {
-                Console.WriteLine($"- [{prediccion.Tipo}] {prediccion.Descripcion(),-40} | Estado: {prediccion.NombreEstado,-9} | Puntos: {prediccion.ObtenerPuntos()}");
+                Console.WriteLine($"- [{prediccion.ObtenerTipo()}] {prediccion.Descripcion(),-40} | Estado: {prediccion.ObtenerNombreEstado(),-9} | Puntos: {prediccion.ObtenerPuntos()}");
             }
 
-            int acertadas = usuario.Predicciones.Count(p => p.NombreEstado == "Acertado");
-            int falladas = usuario.Predicciones.Count(p => p.NombreEstado == "Fallado");
-            int pendientes = usuario.Predicciones.Count(p => p.NombreEstado == "Pendiente");
-            Console.WriteLine($"\nTotal: {acertadas} acertadas, {falladas} falladas, {pendientes} pendientes | {usuario.Puntaje} pts");
+            int acertadas = usuario.ObtenerPredicciones().Count(p => p.ObtenerNombreEstado() == "Acertado");
+            int falladas = usuario.ObtenerPredicciones().Count(p => p.ObtenerNombreEstado() == "Fallado");
+            int pendientes = usuario.ObtenerPredicciones().Count(p => p.ObtenerNombreEstado() == "Pendiente");
+            Console.WriteLine($"\nTotal: {acertadas} acertadas, {falladas} falladas, {pendientes} pendientes | {usuario.ObtenerPuntaje()} pts");
         }
     }
 }

@@ -55,7 +55,7 @@ namespace MundialProde.Servicios
             }
             var partido = pendientes[pIdx - 1];
 
-            var existente = usuario.Predicciones
+            var existente = usuario.ObtenerPredicciones()
                 .OfType<PrediccionResultado>()
                 .FirstOrDefault(p => p.CorrespondeAPartido(partido) && p.PuedeEditar());
             if (existente != null)
@@ -64,9 +64,9 @@ namespace MundialProde.Servicios
                 Console.WriteLine("(se reemplazó tu predicción anterior para este partido)");
             }
 
-            Console.Write($"Goles de {partido.Local.Nombre}: ");
+            Console.Write($"Goles de {partido.ObtenerLocal().ObtenerNombre()}: ");
             int.TryParse(Console.ReadLine(), out int gl);
-            Console.Write($"Goles de {partido.Visitante.Nombre}: ");
+            Console.Write($"Goles de {partido.ObtenerVisitante().ObtenerNombre()}: ");
             int.TryParse(Console.ReadLine(), out int gv);
 
             _factoryResultado.CrearPrediccion(usuario, new object[] { partido, gl, gv });
@@ -75,26 +75,27 @@ namespace MundialProde.Servicios
 
         private void PredecirCampeon(Usuario usuario)
         {
-            var existente = usuario.Predicciones.OfType<PrediccionCampeon>().FirstOrDefault(p => p.PuedeEditar());
+            var existente = usuario.ObtenerPredicciones().OfType<PrediccionCampeon>().FirstOrDefault(p => p.PuedeEditar());
             if (existente != null)
             {
                 usuario.RemoverPrediccion(existente);
                 Console.WriteLine("(se reemplazó tu predicción de campeón anterior)");
             }
 
-            for (int i = 0; i < _copa.Selecciones.Count; i++)
-                Console.WriteLine($"{i + 1}. {_copa.Selecciones[i].Nombre}");
+            var selecciones = _copa.ObtenerSelecciones();
+            for (int i = 0; i < selecciones.Count; i++)
+                Console.WriteLine($"{i + 1}. {selecciones[i].ObtenerNombre()}");
             Console.WriteLine("0. Cancelar");
             Console.Write("Elegí el campeón (número): ");
             string entradaSeleccion = Console.ReadLine();
             if (entradaSeleccion == "0" || string.IsNullOrWhiteSpace(entradaSeleccion)) { Console.WriteLine("Cancelado."); return; }
-            if (!int.TryParse(entradaSeleccion, out int sIdx) || sIdx < 1 || sIdx > _copa.Selecciones.Count)
+            if (!int.TryParse(entradaSeleccion, out int sIdx) || sIdx < 1 || sIdx > selecciones.Count)
             {
                 Console.WriteLine("Selección inválida.");
                 return;
             }
 
-            _factoryCampeon.CrearPrediccion(usuario, new object[] { _copa, _copa.Selecciones[sIdx - 1] });
+            _factoryCampeon.CrearPrediccion(usuario, new object[] { _copa, selecciones[sIdx - 1] });
             Console.WriteLine("Predicción de campeón cargada (estado: Pendiente).");
         }
         public void GenerarPrediccionesAutomaticas(Usuario bot)
@@ -106,9 +107,10 @@ namespace MundialProde.Servicios
                 _factoryResultado.CrearPrediccion(bot, new object[] { partido, gl, gv });
             }
 
-            if (_copa.Selecciones.Count > 0)
+            var selecciones = _copa.ObtenerSelecciones();
+            if (selecciones.Count > 0)
             {
-                var seleccionAzar = _copa.Selecciones[_rnd.Next(_copa.Selecciones.Count)];
+                var seleccionAzar = selecciones[_rnd.Next(selecciones.Count)];
                 _factoryCampeon.CrearPrediccion(bot, new object[] { _copa, seleccionAzar });
             }
         }

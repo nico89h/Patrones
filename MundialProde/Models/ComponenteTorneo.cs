@@ -9,7 +9,7 @@ namespace MundialProde.Models
     // que distinguir el nivel de profundidad del árbol del torneo.
     public abstract class ComponenteTorneo
     {
-        public string Nombre { get; protected set; }
+        protected string Nombre { get; set; }
 
         protected ComponenteTorneo(string nombre)
         {
@@ -27,5 +27,6 @@ namespace MundialProde.Models
         // Busca recursivamente un componente (Etapa o Partido) por nombre en todo el árbol.
         // Al ser abstracto acá, tanto la hoja como el compuesto lo resuelven de forma uniforme.
         public abstract ComponenteTorneo Buscar(string nombre);
+        public string ObtenerNombre() => Nombre;
     }
 }

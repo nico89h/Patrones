@@ -12,16 +12,16 @@ namespace MundialProde.Models
 
         public override Seleccion ObtenerGanador(Partido partido)
         {
-            if (partido.GolesLocal > partido.GolesVisitante) return partido.Local;
-            if (partido.GolesVisitante > partido.GolesLocal) return partido.Visitante;
+            if (partido.ObtenerGolesLocal() > partido.ObtenerGolesVisitante()) return partido.ObtenerLocal();
+            if (partido.ObtenerGolesVisitante() > partido.ObtenerGolesLocal()) return partido.ObtenerVisitante();
             return null;
         }
 
         public override string ObtenerResultado(Partido partido)
         {
-            string resultado = $"{partido.GolesLocal} - {partido.GolesVisitante}";
-            if (partido.GanadorPenales != null)
-                resultado += $" (definido por penales: {partido.GanadorPenales.Nombre})";
+            string resultado = $"{partido.ObtenerGolesLocal()} - {partido.ObtenerGolesVisitante()}";
+            if (partido.ObtenerGanadorPenales() != null)
+                resultado += $" (definido por penales: {partido.ObtenerGanadorPenales().ObtenerNombre()})";
             return resultado;
         }
     }

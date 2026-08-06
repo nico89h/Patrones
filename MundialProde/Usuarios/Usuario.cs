@@ -5,17 +5,23 @@ namespace MundialProde.Usuarios
 {
     public class Usuario
     {
-        public string Nombre { get; }
-        public int Puntaje { get; private set; }
-        public bool EsBot { get; }
+        private readonly string _nombre;
+        private int _puntaje;
+        private readonly bool _esBot;
         private readonly List<Prediccion> _predicciones = new List<Prediccion>();
-        public IReadOnlyList<Prediccion> Predicciones => _predicciones;
+
         public Usuario(string nombre, bool esBot = false)
         {
-            Nombre = nombre;
-            EsBot = esBot;
+            _nombre = nombre;
+            _esBot = esBot;
         }
-        public void SumarPuntos(int puntos) => Puntaje += puntos;
+
+        public string ObtenerNombre() => _nombre;
+        public int ObtenerPuntaje() => _puntaje;
+        public bool EsBot() => _esBot;
+        public IReadOnlyList<Prediccion> ObtenerPredicciones() => _predicciones;
+
+        public void SumarPuntos(int puntos) => _puntaje += puntos;
         public void AgregarPrediccion(Prediccion prediccion) => _predicciones.Add(prediccion);
         public void RemoverPrediccion(Prediccion prediccion) => _predicciones.Remove(prediccion);
     }

@@ -15,24 +15,31 @@ namespace MundialProde.Models
     {
         private static readonly Random _rndPenales = new Random();
         internal static Action AlFinalizarPartido;
-        public Seleccion Local { get; }
-        public Seleccion Visitante { get; }
-        public int GolesLocal { get; private set; }
-        public int GolesVisitante { get; private set; }
-        public string Etapa { get; }
-        public Seleccion GanadorPenales { get; private set; }
+        private readonly Seleccion _local;
+        private readonly Seleccion _visitante;
+        private int _golesLocal;
+        private int _golesVisitante;
+        private readonly string _etapaNombre;
+        private Seleccion _ganadorPenales;
 
         private EstadoPartido _estado = new EstadoPendiente();
 
         private readonly List<IObservadorPartido> _observadores = new List<IObservadorPartido>();
 
         public Partido(Seleccion local, Seleccion visitante, string etapa)
-            : base($"{local.Nombre} vs {visitante.Nombre}")
+            : base($"{local.ObtenerNombre()} vs {visitante.ObtenerNombre()}")
         {
-            Local = local;
-            Visitante = visitante;
-            Etapa = etapa;
+            _local = local;
+            _visitante = visitante;
+            _etapaNombre = etapa;
         }
+
+        public Seleccion ObtenerLocal() => _local;
+        public Seleccion ObtenerVisitante() => _visitante;
+        public int ObtenerGolesLocal() => _golesLocal;
+        public int ObtenerGolesVisitante() => _golesVisitante;
+        public string ObtenerEtapa() => _etapaNombre;
+        public Seleccion ObtenerGanadorPenales() => _ganadorPenales;
 
         public void Suscribir(IObservadorPartido observador) => _observadores.Add(observador);
         public void Desuscribir(IObservadorPartido observador) => _observadores.Remove(observador);
@@ -45,25 +52,25 @@ namespace MundialProde.Models
 
         private Seleccion Ganador => _estado.ObtenerGanador(this);
 
-        public Seleccion GanadorDefinitivo => Ganador ?? GanadorPenales;
+        public Seleccion ObtenerGanadorDefinitivo() => Ganador ?? _ganadorPenales;
 
         public override void Simular(IEstrategiaSimulacion estrategia)
             => _estado.Simular(this, estrategia);
 
         internal void RegistrarResultado(int golesLocal, int golesVisitante)
         {
-            GolesLocal = golesLocal;
-            GolesVisitante = golesVisitante;
+            _golesLocal = golesLocal;
+            _golesVisitante = golesVisitante;
         }
         internal void CambiarEstado(EstadoPartido estado) => _estado = estado;
         internal void ActualizarEstadisticasGrupo()
         {
-            Local.RegistrarResultadoPartido(GolesLocal, GolesVisitante);
-            Visitante.RegistrarResultadoPartido(GolesVisitante, GolesLocal);
+            _local.RegistrarResultadoPartido(_golesLocal, _golesVisitante);
+            _visitante.RegistrarResultadoPartido(_golesVisitante, _golesLocal);
         }
 
         internal void DefinirGanadorPorPenales()
-            => GanadorPenales = _rndPenales.Next(2) == 0 ? Local : Visitante;
+            => _ganadorPenales = _rndPenales.Next(2) == 0 ? _local : _visitante;
 
         public override List<Partido> ObtenerPartidos() => new List<Partido> { this };
 
@@ -74,9 +81,9 @@ namespace MundialProde.Models
         public override void Mostrar(string indent = "")
         {
             string resultado = _estado.ObtenerResultado(this);
-            Console.WriteLine($"{indent}[{Etapa}] {Local.Nombre} {resultado} {Visitante.Nombre}  ({_estado.Nombre})");
+            Console.WriteLine($"{indent}[{_etapaNombre}] {_local.ObtenerNombre()} {resultado} {_visitante.ObtenerNombre()}  ({_estado.Nombre})");
         }
-        public string DescripcionCorta() => $"[{Etapa}] {Local.Nombre} vs {Visitante.Nombre}";
-        public bool EsLaFinal() => Etapa == "Final";
+        public string DescripcionCorta() => $"[{_etapaNombre}] {_local.ObtenerNombre()} vs {_visitante.ObtenerNombre()}";
+        public bool EsLaFinal() => _etapaNombre == "Final";
     }
 }

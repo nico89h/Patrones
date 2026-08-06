@@ -16,10 +16,10 @@ namespace MundialProde.Predicciones
         }
         public override bool Acerto() => _copa.EsCampeon(_seleccionPredicha);
 
-        public override int PuntosBase => 10;
+        public override int ObtenerPuntosBase() => 10;
 
-        public override string Tipo => "Campeón";
+        public override string ObtenerTipo() => "Campeón";
 
-        public override string Descripcion() => $"Campeón: {_seleccionPredicha.Nombre}";
+        public override string Descripcion() => $"Campeón: {_seleccionPredicha.ObtenerNombre()}";
     }
 }
